@@ -1,0 +1,21 @@
+```yaml
+name: Daily Streak
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Jam 07:00 WIB setiap hari
+  workflow_dispatch:     # Tombol manual test
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Update streak
+      run: |
+        echo "# Streak Update - $(date)" >> README.md
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git add .
+        git commit -m "📅 $(date +%Y-%m-%d)"
+        git push
